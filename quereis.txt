@@ -1,0 +1,53 @@
+query 1
+//////////
+SELECT a.Name , count(g.GenreId) as songs
+FROM Artist as a
+INNER JOIN Album as b on a.ArtistId = b.ArtistId
+INNER join Track as t on b.AlbumId=t.AlbumId
+INNER join Genre as g on t.GenreId=g.GenreId and g.Name='Rock'
+GROUP BY a.ArtistId, a.Name
+ORDER BY songs Desc
+LIMIT  10;
+
+
+query 2
+/////////
+SELECT c.Country,count(g.Name) as salesRock
+FROM Customer as c
+INNER JOIN Invoice as i on c.CustomerId = i.CustomerId
+INNER join InvoiceLine as l on i.InvoiceId=l.InvoiceId
+INNER join Track as t on l.TrackId=t.TrackId
+INNER join Genre as g on t.GenreId=g.GenreId and g.Name='Rock'
+GROUP BY c.Country
+ORDER BY c.Country Desc
+LIMIT  10;
+
+
+query 3
+/////////
+select (c.FirstName || ' # id '||c.CustomerId )  as BestCustomer ,sum(UnitPrice) as purcashe
+from  Invoice i
+INNER JOIN InvoiceLine l
+on i.InvoiceId=l.InvoiceId
+INNER join Customer c
+on i.CustomerId=c.CustomerId
+GROUP BY 1 
+ORDER BY 2 DESC   
+LIMIT 10;
+
+
+query 4
+/////////////
+SELECT a.Name ,sum(l.UnitPrice*l.Quantity) as AmountSpent
+FROM Artist a
+inner join Album b
+on a.ArtistId =b.ArtistId
+INNER join Track t
+on b.AlbumId=t.AlbumId
+INNER join InvoiceLine l
+on t.TrackId=l.TrackId 
+inner JOIN Invoice as i
+on l.InvoiceId=i.InvoiceId
+GROUP BY a.ArtistId
+ORDER BY 2 DESC
+LIMIT 10;
